@@ -1,0 +1,41 @@
+This is a hack to disable the HDCP encryption in HDMI splitters that use
+the chipsets from Explore Semiconductor, e.g. EP9132, EP9134, EP9142.
+
+The code should be compiled and written to an Atmel ATTINY9 microcontroller,
+the fuse bits should be left on the factory default of 0xFF.
+
+The microcontroller should be patched into the splitter as follows:
+
+Pin 1: Connect to I2C clock between splitter IC and main MCU
+Pin 2: Connect to ground
+Pin 3: Connect to I2C data between splitter IC and main MCU
+Pin 4: No Connect, there is a debug signal on this pin, it goes
+       high when it is overriding a bit on the I2C bus
+Pin 5: Connect to 3.3V
+Pin 6: No Connect, reset pin, pulled high internally.
+
+For better noise immunity, opptionally connect a 0.1uF capacitor between
+pins 2 and 5, and a 1K resistor between pin 1 and the I2C clock signal.
+
+
+The hack works because the HDMI splitter IC contains a HDMI receiver
+that works autonomously with its own HDCP keys. There are then two
+separate HDMI transmitters that need an external MCU to perform HDCP
+key exchange for them. 
+
+The main MCU polls a register within the splitter IC to determine 
+whether HDCP encryption is currently in use by the receiver. If it is
+then it blanks the output of the transmitters and attempts to preform
+key exchange with whatever is conneced, only re-enabling the transmitters
+once key exchange is successful and it has enabled encryption for the
+transmitters.
+
+The encryption status of the receiver is signalled by bit 4 of register 7
+in the splitter IC. It is 0 if encryption is not enabled, it is 1 if
+encryption is enabled.
+
+The hack MCU watches the I2C bus and whenever register 7 is read, it pulls
+the data line low for bit 4 so that it always appears that there is no
+encryption on the incoming signal. The main MCU then never enables encryption
+for the transmitters and the splitter has become an HDCP stripper.
+
