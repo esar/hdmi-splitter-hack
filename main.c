@@ -138,11 +138,16 @@ RESTART:
 			{
 				if(lastRegAddr == 0x07)
 				{
-					lastRegAddr = 0;
-
-					// force bit 4 to be zero
+					// force the 4th bit to zero (bit 4, RX_ENC_ON)
 					overrideByte(4);
 				}
+				else if(lastRegAddr == 0x40)
+				{
+					// force the 8th bit to zero (bit 0, RX_M0_RDY)
+					overrideByte(8);
+				}
+
+				lastRegAddr = 0;
 			}
 		}
 	}
