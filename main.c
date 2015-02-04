@@ -6,7 +6,7 @@
 uint8_t readByte()
 {
 	uint8_t i;
-	uint8_t pins;
+	uint8_t pins = PINB;
 	uint8_t prevPins = 0;
 	uint8_t byte = 0;
 
@@ -48,7 +48,7 @@ uint8_t readByte()
 // force the specified bit (1-8) to be zero
 uint8_t overrideByte(uint8_t bit)
 {
-	uint8_t pins;
+	uint8_t pins = PINB;
 	uint8_t prevPins = 0;
 
 	while(--bit)
