@@ -4,6 +4,8 @@ the chipsets from Explore Semiconductor, e.g. EP9132, EP9134, EP9142.
 The code should be compiled and written to an Atmel ATTINY9 microcontroller,
 the fuse bits should be left on the factory default of 0xFF.
 
+NOTE: The -O3 compiler optimisation flag is critical. 
+
 The microcontroller should be patched into the splitter as follows:
 
 Pin 1: Connect to I2C clock between splitter IC and main MCU
