@@ -1,6 +1,8 @@
 This is a hack to disable the HDCP encryption in HDMI splitters that use
 the chipsets from Explore Semiconductor, e.g. EP9132, EP9134, EP9142.
 
+For full description, see http://hacks.esar.org.uk/hdmi-splitter-hack/
+
 The code should be compiled and written to an Atmel ATTINY9 microcontroller,
 the fuse bits should be left on the factory default of 0xFF.
 
